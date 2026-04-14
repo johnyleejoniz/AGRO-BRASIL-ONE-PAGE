@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useInView, animate } from 'motion/react';
-import { Leaf, Factory, ShieldCheck, MapPin, Mail, Phone, MessageCircle, ArrowRight, Droplet, Truck } from 'lucide-react';
+import { motion, useInView, animate, AnimatePresence } from 'motion/react';
+import { Leaf, Factory, ShieldCheck, MapPin, Mail, Phone, MessageCircle, ArrowRight, Droplet, Truck, Menu, X } from 'lucide-react';
 
 // Imagem de fundo principal (Hero)
 const HERO_BG_IMAGE_URL = "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/hero%20image.png";
@@ -29,17 +29,25 @@ function AnimatedCounter({ value, prefix = "", suffix = "", format = false }: { 
 }
 
 export default function App() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col font-sans bg-texture">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Leaf className="w-8 h-8 text-brand-green" />
-            <span className="font-bold text-2xl text-brand-navy tracking-tight">AGRO BRASIL</span>
+          <div className="flex items-center">
+            <img 
+              src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/logo%20agro%20verde.png" 
+              alt="Agro Brasil Logo" 
+              className="h-8 sm:h-10 w-auto"
+              referrerPolicy="no-referrer"
+            />
           </div>
-          <div className="flex items-center gap-6">
-            <nav className="hidden md:flex gap-8">
+          
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-6">
+            <nav className="flex gap-8">
               <a href="#sobre" className="text-sm font-medium text-gray-600 hover:text-brand-green transition-colors">Sobre Nós</a>
               <a href="#diferenciais" className="text-sm font-medium text-gray-600 hover:text-brand-green transition-colors">Diferenciais</a>
               <a href="#mix" className="text-sm font-medium text-gray-600 hover:text-brand-green transition-colors">Nosso Mix</a>
@@ -52,17 +60,55 @@ export default function App() {
               className="flex items-center gap-2 px-5 py-2.5 bg-brand-green text-white text-sm font-medium rounded-full hover:bg-brand-green/90 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5"
             >
               <MessageCircle className="w-4 h-4" />
-              <span className="hidden sm:inline">Solicitar Orçamento</span>
-              <span className="sm:hidden">Orçamento</span>
+              <span>Solicitar Orçamento</span>
             </a>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="md:hidden flex items-center gap-3">
+            <a 
+              href="https://wa.me/5575999002008" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex items-center justify-center w-10 h-10 bg-brand-green text-white rounded-full shadow-sm"
+              aria-label="Solicitar Orçamento"
+            >
+              <MessageCircle className="w-5 h-5" />
+            </a>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+              className="text-brand-navy p-2 -mr-2"
+              aria-label="Menu"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Nav Dropdown */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white border-b border-gray-100 overflow-hidden"
+            >
+              <nav className="flex flex-col px-4 py-4 gap-4 shadow-inner">
+                <a href="#sobre" onClick={() => setIsMobileMenuOpen(false)} className="text-base font-medium text-gray-600 p-2 hover:bg-gray-50 rounded-lg">Sobre Nós</a>
+                <a href="#diferenciais" onClick={() => setIsMobileMenuOpen(false)} className="text-base font-medium text-gray-600 p-2 hover:bg-gray-50 rounded-lg">Diferenciais</a>
+                <a href="#mix" onClick={() => setIsMobileMenuOpen(false)} className="text-base font-medium text-gray-600 p-2 hover:bg-gray-50 rounded-lg">Nosso Mix</a>
+                <a href="#contato" onClick={() => setIsMobileMenuOpen(false)} className="text-base font-medium text-gray-600 p-2 hover:bg-gray-50 rounded-lg">Contato</a>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <main className="flex-grow">
         {/* Hero Section */}
         <section 
-          className="relative pt-32 pb-40 overflow-hidden bg-cover bg-center bg-no-repeat"
+          className="relative pt-24 pb-32 md:pt-32 md:pb-40 overflow-hidden bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${HERO_BG_IMAGE_URL})` }}
         >
           {/* Overlay de Legibilidade */}
@@ -105,9 +151,9 @@ export default function App() {
         </section>
 
         {/* About Us */}
-        <section id="sobre" className="py-24 bg-gray-50">
+        <section id="sobre" className="py-16 md:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -115,11 +161,11 @@ export default function App() {
                 transition={{ duration: 0.6 }}
               >
                 <h2 className="text-3xl font-bold text-brand-navy mb-6">Sobre a Agro Brasil</h2>
-                <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-8">
                   Mais que mangueiras, entregamos confiança no campo. Na Agro Brasil, tecnologia de ponta se une à responsabilidade ambiental com produtos 100% sustentáveis e aditivos Anti-UV.
                 </p>
                 <div className="p-6 bg-white rounded-2xl border border-brand-green/20 shadow-sm">
-                  <p className="text-xl font-medium text-brand-green italic">
+                  <p className="text-lg md:text-xl font-medium text-brand-green italic">
                     "Mais do que um produto, um compromisso com o meio Ambiente."
                   </p>
                 </div>
@@ -129,14 +175,14 @@ export default function App() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl"
+                className="relative h-64 md:h-[400px] rounded-3xl overflow-hidden shadow-2xl"
               >
-                {/* Placeholder for an agrotech image */}
                 <img 
-                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                  alt="Plantação agrícola" 
+                  src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/sobre.png" 
+                  alt="Sobre a Agro Brasil" 
                   className="absolute inset-0 w-full h-full object-cover"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 to-transparent"></div>
               </motion.div>
@@ -200,9 +246,9 @@ export default function App() {
         </section>
 
         {/* Technical Features */}
-        <section id="diferenciais" className="py-24">
+        <section id="diferenciais" className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12 md:mb-16">
               <h2 className="text-3xl font-bold text-brand-navy">Nossos Diferenciais</h2>
               <p className="mt-4 text-gray-600">O que faz da Agro Brasil a escolha certa para sua lavoura.</p>
             </div>
@@ -233,9 +279,9 @@ export default function App() {
         </section>
 
         {/* Interactive Catalog */}
-        <section id="mix" className="py-24 bg-gray-50">
+        <section id="mix" className="py-16 md:py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12 md:mb-16">
               <h2 className="text-3xl font-bold text-brand-navy">Nosso Mix de Produtos</h2>
               <p className="mt-4 text-gray-600">Soluções completas em mangueiras para diversas aplicações.</p>
             </div>
@@ -249,7 +295,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-[#08a46d]/30 hover:border-[#08a46d] transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/1.png" alt="Linha AGRO" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/1.png" alt="Linha AGRO" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" loading="lazy" />
                   <div className="absolute top-4 left-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                     ⭐ Mais Vendida no Vale
                   </div>
@@ -288,7 +334,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-green-500/30 hover:border-green-500 transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/2.png" alt="Linha Standard Verde" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/2.png" alt="Linha Standard Verde" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" loading="lazy" />
                 </div>
                 <div className="p-8 flex-grow flex flex-col">
                   <div className="absolute top-48 right-0 w-24 h-24 bg-green-500/5 rounded-bl-full -z-10"></div>
@@ -323,7 +369,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-red-500/30 hover:border-red-500 transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/3.png" alt="Linha Standard Vermelha" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/3.png" alt="Linha Standard Vermelha" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" loading="lazy" />
                 </div>
                 <div className="p-8 flex-grow flex flex-col">
                   <div className="absolute top-48 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full -z-10"></div>
@@ -358,7 +404,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-blue-400/30 hover:border-blue-400 transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/4.png" alt="Linha Standard Azul" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/4.png" alt="Linha Standard Azul" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" loading="lazy" />
                 </div>
                 <div className="p-8 flex-grow flex flex-col">
                   <div className="absolute top-48 right-0 w-24 h-24 bg-blue-400/5 rounded-bl-full -z-10"></div>
@@ -393,7 +439,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-blue-600/30 hover:border-blue-600 transition-colors relative overflow-hidden flex flex-col md:col-span-2 lg:col-span-1"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/5.png" alt="Construção Civil" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/5.png" alt="Construção Civil" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" loading="lazy" />
                   <div className="absolute top-4 left-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                     🏗️ Uso Industrial
                   </div>
@@ -425,9 +471,9 @@ export default function App() {
             </div>
             
             {/* Galeria Em Ação */}
-            <div className="mt-24">
-              <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold text-brand-navy">Mangueiras em Ação</h3>
+            <div className="mt-16 md:mt-24">
+              <div className="text-center mb-10 md:mb-12">
+                <h3 className="text-2xl md:text-3xl font-bold text-brand-navy">Mangueiras em Ação</h3>
                 <p className="mt-4 text-gray-600">Qualidade comprovada em todas as etapas.</p>
               </div>
               <div className="grid md:grid-cols-3 gap-6">
@@ -437,11 +483,11 @@ export default function App() {
                   viewport={{ once: true }}
                   className="group relative rounded-3xl overflow-hidden shadow-md aspect-[4/3]"
                 >
-                  <img src="https://images.unsplash.com/photo-1580982327559-c1202864eb05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Rolo industrial" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/1e.png" alt="Rolo industrial" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/90 via-brand-navy/30 to-transparent opacity-90"></div>
-                  <div className="absolute bottom-0 left-0 p-8">
+                  <div className="absolute bottom-0 left-0 p-6 md:p-8">
                     <span className="inline-block px-3 py-1 bg-brand-green text-white text-xs font-bold rounded-full mb-3">01</span>
-                    <h4 className="text-white font-bold text-xl mb-2">Escala Industrial</h4>
+                    <h4 className="text-white font-bold text-lg md:text-xl mb-2">Escala Industrial</h4>
                     <p className="text-gray-200 text-sm leading-relaxed">Rolos otimizados para logística e grandes extensões.</p>
                   </div>
                 </motion.div>
@@ -453,11 +499,11 @@ export default function App() {
                   transition={{ delay: 0.1 }}
                   className="group relative rounded-3xl overflow-hidden shadow-md aspect-[4/3]"
                 >
-                  <img src="https://images.unsplash.com/photo-1611288875782-c84022b7a3bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Close na parede da mangueira" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/2e.png" alt="Close na parede da mangueira" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/90 via-brand-navy/30 to-transparent opacity-90"></div>
-                  <div className="absolute bottom-0 left-0 p-8">
+                  <div className="absolute bottom-0 left-0 p-6 md:p-8">
                     <span className="inline-block px-3 py-1 bg-brand-green text-white text-xs font-bold rounded-full mb-3">02</span>
-                    <h4 className="text-white font-bold text-xl mb-2">Resistência Extrema</h4>
+                    <h4 className="text-white font-bold text-lg md:text-xl mb-2">Resistência Extrema</h4>
                     <p className="text-gray-200 text-sm leading-relaxed">Paredes espessas (até 3,0mm) e acabamento premium.</p>
                   </div>
                 </motion.div>
@@ -469,11 +515,11 @@ export default function App() {
                   transition={{ delay: 0.2 }}
                   className="group relative rounded-3xl overflow-hidden shadow-md aspect-[4/3]"
                 >
-                  <img src="https://images.unsplash.com/photo-1592982537447-6f2a6a0a3023?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Instalação na plantação" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/3e.png" alt="Instalação na plantação" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/90 via-brand-navy/30 to-transparent opacity-90"></div>
-                  <div className="absolute bottom-0 left-0 p-8">
+                  <div className="absolute bottom-0 left-0 p-6 md:p-8">
                     <span className="inline-block px-3 py-1 bg-brand-green text-white text-xs font-bold rounded-full mb-3">03</span>
-                    <h4 className="text-white font-bold text-xl mb-2">Uso no Campo</h4>
+                    <h4 className="text-white font-bold text-lg md:text-xl mb-2">Uso no Campo</h4>
                     <p className="text-gray-200 text-sm leading-relaxed">Proteção Anti-UV garantindo vida útil sob o sol.</p>
                   </div>
                 </motion.div>
@@ -488,9 +534,13 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 mb-12">
             <div>
-              <div className="flex items-center gap-2 mb-6">
-                <Leaf className="w-8 h-8 text-brand-green" />
-                <span className="font-bold text-2xl tracking-tight">AGRO BRASIL</span>
+              <div className="flex items-center mb-6">
+                <img 
+                  src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/logo%20agro%20verde.png" 
+                  alt="Agro Brasil Logo" 
+                  className="h-12 w-auto brightness-0 invert"
+                  referrerPolicy="no-referrer"
+                />
               </div>
               <p className="text-gray-300 max-w-sm">
                 Indústria especializada em mangueiras cegas de alta durabilidade. Tecnologia verde e resistência funcional.
