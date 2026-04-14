@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'motion/react';
 import { Leaf, Factory, ShieldCheck, MapPin, Mail, Phone, MessageCircle, ArrowRight, Droplet, Truck } from 'lucide-react';
 
-// TODO: Substitua esta URL pela sua URL definitiva do Supabase
-const HERO_BG_IMAGE_URL = "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80";
+// Imagem de fundo principal (Hero)
+const HERO_BG_IMAGE_URL = "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/hero%20image.png";
 
 function AnimatedCounter({ value, prefix = "", suffix = "", format = false }: { value: number, prefix?: string, suffix?: string, format?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -249,7 +249,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-[#08a46d]/30 hover:border-[#08a46d] transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Linha AGRO" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/1.png" alt="Linha AGRO" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
                   <div className="absolute top-4 left-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                     ⭐ Mais Vendida no Vale
                   </div>
@@ -288,7 +288,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-green-500/30 hover:border-green-500 transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1416879598556-3346f5b64524?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Linha Standard Verde" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/2.png" alt="Linha Standard Verde" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
                 </div>
                 <div className="p-8 flex-grow flex flex-col">
                   <div className="absolute top-48 right-0 w-24 h-24 bg-green-500/5 rounded-bl-full -z-10"></div>
@@ -323,7 +323,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-red-500/30 hover:border-red-500 transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Linha Standard Vermelha" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/3.png" alt="Linha Standard Vermelha" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
                 </div>
                 <div className="p-8 flex-grow flex flex-col">
                   <div className="absolute top-48 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full -z-10"></div>
@@ -358,7 +358,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-blue-400/30 hover:border-blue-400 transition-colors relative overflow-hidden flex flex-col"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Linha Standard Azul" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/4.png" alt="Linha Standard Azul" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
                 </div>
                 <div className="p-8 flex-grow flex flex-col">
                   <div className="absolute top-48 right-0 w-24 h-24 bg-blue-400/5 rounded-bl-full -z-10"></div>
@@ -393,7 +393,7 @@ export default function App() {
                 className="bg-white rounded-3xl shadow-sm border-2 border-blue-600/30 hover:border-blue-600 transition-colors relative overflow-hidden flex flex-col md:col-span-2 lg:col-span-1"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1504307651254-35680f356f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Construção Civil" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <img src="https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/5.png" alt="Construção Civil" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
                   <div className="absolute top-4 left-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                     🏗️ Uso Industrial
                   </div>
