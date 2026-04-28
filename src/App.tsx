@@ -1,9 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate, AnimatePresence } from 'motion/react';
-import { Leaf, Factory, ShieldCheck, MapPin, Mail, Phone, MessageCircle, ArrowRight, Droplet, Truck, Menu, X } from 'lucide-react';
+import { Leaf, Factory, ShieldCheck, MapPin, Mail, Phone, MessageCircle, ArrowRight, Droplet, Truck, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Imagem de fundo principal (Hero)
 const HERO_BG_IMAGE_URL = "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/hero%20image.png";
+
+// Imagens Carrosel
+const CAROUSEL_IMAGES = [
+  "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/CARROSEL/sobre.png",
+  "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/CARROSEL/WhatsApp%20Image%202026-04-15%20at%2009.52.05%20(1).jpeg",
+  "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/CARROSEL/WhatsApp%20Image%202026-04-15%20at%2009.52.05%20(2).jpeg",
+  "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/CARROSEL/WhatsApp%20Image%202026-04-15%20at%2009.52.05%20(3).jpeg",
+  "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/CARROSEL/WhatsApp%20Image%202026-04-15%20at%2009.52.05.jpeg",
+  "https://fvshysxuamdatyugdipx.supabase.co/storage/v1/object/public/video%20teste/imagems%20AGRO%20BRASIL/CARROSEL/WhatsApp%20Image%202026-04-15%20at%2009.52.06.jpeg"
+];
 
 function AnimatedCounter({ value, prefix = "", suffix = "", format = false }: { value: number, prefix?: string, suffix?: string, format?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -30,6 +40,55 @@ function AnimatedCounter({ value, prefix = "", suffix = "", format = false }: { 
 
 export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Carousel Drag State
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [hasDragged, setHasDragged] = useState(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDown(true);
+    setHasDragged(false);
+    if (!carouselRef.current) return;
+    setStartX(e.pageX - carouselRef.current.offsetLeft);
+    setScrollLeft(carouselRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDown(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDown(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDown || !carouselRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    if (Math.abs(walk) > 10) setHasDragged(true);
+    carouselRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollAmount = carouselRef.current.clientWidth * 0.8;
+      carouselRef.current.scrollBy({ 
+        left: direction === 'left' ? -scrollAmount : scrollAmount, 
+        behavior: 'smooth' 
+      });
+    }
+  };
+
+  const handleImageClick = (src: string) => {
+    if (!hasDragged) {
+      setSelectedImage(src);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-texture">
@@ -272,6 +331,67 @@ export default function App() {
                   <h3 className="text-xl font-bold text-brand-navy">{feature.title}</h3>
                   <p className="text-brand-green font-medium mb-3">{feature.subtitle}</p>
                   <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Mini Galeria (Carousel) */}
+        <section className="py-16 bg-white overflow-hidden border-t border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+            <h2 className="text-3xl font-bold text-brand-navy">Nossa Estrutura</h2>
+            <p className="mt-2 text-gray-600">Acompanhe um pouco do nosso dia a dia padrão de qualidade.</p>
+          </div>
+          
+          <div className="relative group max-w-[100vw] mx-auto">
+            <button 
+              onClick={() => scrollCarousel('left')} 
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-brand-navy p-2 sm:p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 disabled:opacity-0 focus:opacity-100 backdrop-blur-sm"
+              aria-label="Anterior"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button 
+              onClick={() => scrollCarousel('right')} 
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-brand-navy p-2 sm:p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 disabled:opacity-0 focus:opacity-100 backdrop-blur-sm"
+              aria-label="Próximo"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            <div 
+              ref={carouselRef}
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              className={`flex overflow-x-auto gap-4 px-4 sm:px-6 lg:px-8 pb-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDown ? 'cursor-grabbing select-none' : 'cursor-grab snap-x snap-mandatory'}`}
+            >
+              {CAROUSEL_IMAGES.map((src, index) => (
+                <motion.div
+                  key={index}
+                  className="flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] snap-center rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow relative group/item"
+                  onClick={() => handleImageClick(src)}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <img 
+                    src={src} 
+                    alt={`Galeria ${index + 1}`} 
+                    className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500 pointer-events-none"
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                    draggable="false"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover/item:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                    <span className="text-white opacity-0 group-hover/item:opacity-100 transition-opacity font-medium bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm flex items-center gap-2">
+                      Ampliar Imagem
+                    </span>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -577,7 +697,7 @@ export default function App() {
         href="https://wa.me/5575999002008"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-brand-green text-white p-4 rounded-full shadow-lg shadow-brand-green/30 hover:bg-brand-green/90 hover:scale-110 hover:shadow-xl transition-all duration-300 group flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-40 bg-brand-green text-white p-4 rounded-full shadow-lg shadow-brand-green/30 hover:bg-brand-green/90 hover:scale-110 hover:shadow-xl transition-all duration-300 group flex items-center justify-center"
         aria-label="Fale conosco no WhatsApp"
       >
         <MessageCircle className="w-7 h-7" />
@@ -586,6 +706,38 @@ export default function App() {
           Fale com a fábrica
         </span>
       </a>
+
+      {/* Lightbox / Popup */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button
+              className="absolute top-6 right-6 text-white hover:text-brand-green transition-colors p-2 bg-black/50 rounded-full hover:bg-black/80 z-50"
+              onClick={() => setSelectedImage(null)}
+              aria-label="Fechar galeria"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              src={selectedImage}
+              alt="Preview"
+              className="max-w-[95vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              referrerPolicy="no-referrer"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
